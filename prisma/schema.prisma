@@ -1,0 +1,37 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Emails {
+  id        Int      @id @unique(map: "id")
+  sender    String   @db.VarChar(255)
+  recipient String   @db.VarChar(255)
+  subject   String?  @db.VarChar(255)
+  content   String?  @db.Text
+  timestamp DateTime @default(now()) @db.Timestamp(0)
+  isStarred Boolean? @default(false)
+  isSnoozed Boolean? @default(false)
+}
+
+model Users {
+  id       Int    @id @unique(map: "id")
+  username String @db.VarChar(255)
+  email    String @unique(map: "email") @db.VarChar(255)
+  password String @db.VarChar(255)
+}
+
+model drafts {
+  id        Int       @id @unique(map: "id")
+  sender    String?   @db.VarChar(255)
+  recipient String?   @db.VarChar(255)
+  subject   String?   @db.VarChar(255)
+  content   String?   @db.Text
+  timestamp DateTime? @default(now()) @db.Timestamp(0)
+  isStarred Boolean?  @default(false)
+  isSnoozed Boolean?  @default(false)
+}
